@@ -1,53 +1,48 @@
+using System.Data.SQLite;
 using Ranker.Lib.Models;
 using Ranker.Lib.Repository;
 
 namespace Ranker.Console.Repository;
 
-public class LeagueRepository : IRepository<League>
+public class ScoreBoardRepository : IRepository<ScoreBoard>
 {
     IConnectionHelper<SQLiteConnection> _connectionHelper;
     const string TABLE = "League";
-    public LeagueRepository(IConnectionHelper<SQLiteConnection> connectionHelper)
+    public ScoreBoardRepository(IConnectionHelper<SQLiteConnection> connectionHelper)
     {
         _connectionHelper = connectionHelper;
     }
 
-    public IEnumerable<League> GetAll()
+    public IEnumerable<ScoreBoard> GetAll()
     {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
         SQLiteCommand command = conn.CreateCommand();
         command.CommandText = $"SELECT PersonId, FirstName, MiddleName, LastName, RegisteredDate, AddressId, PreferredContactMethodId FROM {TABLE}";
 
-        List<PerLeagueson> result = new();
+        List<ScoreBoard> result = new();
         SQLiteDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
-            League p = new()
+            ScoreBoard p = new()
             {
-                PersonId = reader.GetInt32(0),
-                FirstName = reader.GetString(1),
-                MiddleName = reader.GetString(2),
-                LastName = reader.GetString(3),
-                RegisterdDate = reader.GetDateTime(4),
-                Address = reader.GetInt32(5),
-                PreferredContactMethod = reader.GetInt32(6),
+                
             };
             result.Add(p);
         }
         return result;
     }
 
-    public League? GetById(int id)
+    public ScoreBoard? GetById(int id)
     {
         throw new NotImplementedException();
     }
 
-    public void Add(League model)
+    public void Add(ScoreBoard model)
     {
         throw new NotImplementedException();
     }
 
-    public void Update(League model)
+    public void Update(ScoreBoard model)
     {
         throw new NotImplementedException();
     }
