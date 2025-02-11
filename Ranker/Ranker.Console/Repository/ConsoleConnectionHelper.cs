@@ -11,7 +11,7 @@ namespace Ranker.Console.Repository;
 
 internal class ConsoleConnectionHelper : IConnectionHelper<SQLiteConnection>
 {
-	public string DatabaseName => "database.db";
+	public string DatabaseName => "Ranker.Lib/database.db";
 	public SQLiteConnection GetConnection()
 	{
 		SQLiteConnection conn = new ($"Data Source={DatabaseName}");
