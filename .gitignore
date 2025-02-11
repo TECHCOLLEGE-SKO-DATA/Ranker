@@ -2,3 +2,4 @@
 .vscode
 bin
 obj
+Ranker/Database.db
