@@ -2,4 +2,5 @@
 .vscode
 bin
 obj
-Ranker/Database.db
+Ranker\Ranker.Lib/database.db
+/Ranker/Ranker.Lib/database.db
