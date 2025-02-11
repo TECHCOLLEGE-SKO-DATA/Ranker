@@ -2,18 +2,33 @@
 using Ranker.Console.Repository;
 using Ranker.Lib.Models;
 
-Console.WriteLine("Hello, World!");
-List<ScoreBoard> boards = new();
 
-ConsoleConnectionHelper _connHelper = new();
-
-ScoreBoardRepository repo = new ScoreBoardRepository(_connHelper);
-////////////////////////
-void getStuff()
+class Program
 {
-	ScoreBoardRepository repo = new ScoreBoardRepository(_connHelper);
+	public static void Main(string[] args)
+	{
+		Console.WriteLine("Hello, World!");
+		List<ScoreBoard> boards = new();
 
+		ConsoleConnectionHelper _connHelper = new();
+		if (!File.Exists(_connHelper.DatabaseName))
+		{
+			_connHelper.ExecuteNonQuery(@"CREATE TABLE sdfblasdf(
+			ID int jhasdfjklsd
+			)");
+		}
+
+		ScoreBoardRepository repo = new ScoreBoardRepository(_connHelper);
+		////////////////////////
+		void getStuff()
+		{
+			ScoreBoardRepository repo = new ScoreBoardRepository(_connHelper);
+
+		}
+	}
 }
+
+
 
 
 
