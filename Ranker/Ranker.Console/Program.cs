@@ -19,12 +19,8 @@ class Program
 		}
 
 		ScoreBoardRepository repo = new ScoreBoardRepository(_connHelper);
-		////////////////////////
-		void getStuff()
-		{
-			ScoreBoardRepository repo = new ScoreBoardRepository(_connHelper);
-
-		}
+		var data = repo.GetAll();
+		Console.WriteLine(data);
 	}
 }
 

@@ -2,7 +2,7 @@
 
 public class ScoreBoard : BaseModel, IModel 
 {
-    public int LeagueId { get; set; }
+    public int ScoreBoardId { get; set; }
     public string Name { get; set; } = String.Empty;
     public string Description { get; set; } = String.Empty;
     public string UniqueKey = String.Empty;
@@ -10,7 +10,7 @@ public class ScoreBoard : BaseModel, IModel
 
     public string Validate() 
     {
-        if (LeagueId <= 0)
+        if (ScoreBoardId <= 0)
         {
             return "Invalid League Id";
         }

@@ -1,10 +1,10 @@
 namespace Ranker.Lib.Models;
 
-public class Score : IModel
+public class Score : BaseModel, IModel
 {
     public int ScoreId { get; set; }
-    public int LeagueId { get; set; }
-    public string ParticipantName { get; set; }
+    public int ScoreBoardId { get; set; }
+    public string ParticipantName { get; set; } = string.Empty;
     public int Points { get; set; }
 
     public string Validate()
@@ -12,7 +12,8 @@ public class Score : IModel
         if (ScoreId <= 0)
         {
             return "Invalid Score Id";
-        }if (LeagueId <= 0)
+        }
+        if (ScoreBoardId <= 0)
         {
             return "Invalid League Id";
         }
