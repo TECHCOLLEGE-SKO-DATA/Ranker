@@ -2,5 +2,5 @@
 .vscode
 bin
 obj
-Ranker\Ranker.Lib/database.db
 /Ranker/Ranker.Lib/database.db
+/Ranker/Ranker.Lib/SQLite/database.db
