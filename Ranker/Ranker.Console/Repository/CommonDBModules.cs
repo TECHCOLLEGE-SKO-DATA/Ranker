@@ -2,6 +2,7 @@
 using Ranker.Lib.Repository;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -27,36 +28,66 @@ public class CommonDBModules<T>
 		List<T> result = new();
 		SQLiteDataReader reader = command.ExecuteReader();
 
-		while (reader.Read())
-		{
-			result.Add(readRow(reader));
-		}
-
-		return result;
+		return ReadAll(reader, readRow);
 	}
 
-	public void ExecuteNonQuery(string nonQuery)
+	private List<T> ReadAll(SQLiteDataReader reader, Func<SQLiteDataReader, T> readRow)
 	{
-		using SQLiteConnection conn = _connectionHelper.GetConnection();
-		SQLiteCommand command = conn.CreateCommand();
-		command.CommandText = nonQuery;
+        List<T> result = new();
 
-		command.ExecuteNonQuery();
+        while (reader.Read())
+        {
+            result.Add(readRow(reader));
+        }
+
+        return result;
+    }
+	
+	public SQLiteCommand CreateCommand(string query, SQLiteConnection conn)
+	{
+        SQLiteCommand command = conn.CreateCommand();
+        command.CommandText = query;
+		return command;
+    }
+
+    public List<T> ExecuteQuery(SQLiteCommand command, Func<SQLiteDataReader, T> readRow)
+	{
+		return ReadAll(command.ExecuteReader(), readRow);
+	}
+
+
+    public void ExecuteNonQuery(string nonQuery)
+	{
+        using SQLiteConnection conn = _connectionHelper.GetConnection();
+        CreateCommand(nonQuery, conn).ExecuteNonQuery();
 	}
 
 	public T? ExecuteSingleQuery(string query, Func<SQLiteDataReader, T> readRow)
 	{
 		using SQLiteConnection conn = _connectionHelper.GetConnection();
-		SQLiteCommand command = conn.CreateCommand();
-		command.CommandText = query;
+		SQLiteCommand command = CreateCommand(query, conn);
 
-		List<T> result = new();
 		SQLiteDataReader reader = command.ExecuteReader();
-		if (reader.Read())
-		{
-			return readRow(reader);
-		}
 
-		return default;
+		return ReadSingleRow(reader, readRow);
 	}
+
+    public T? ExecuteSingleQuery(SQLiteCommand command, Func<SQLiteDataReader, T> readRow)
+	{
+        SQLiteDataReader reader = command.ExecuteReader();
+
+        return ReadSingleRow(reader, readRow);
+    }
+
+
+
+    private T? ReadSingleRow(SQLiteDataReader reader, Func<SQLiteDataReader, T> readRow)
+	{
+        if (reader.Read())
+        {
+            return readRow(reader);
+        }
+
+        return default;
+    }
 }
