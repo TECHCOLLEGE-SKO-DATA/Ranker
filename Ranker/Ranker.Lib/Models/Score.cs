@@ -6,7 +6,6 @@ public class Score : BaseModel, IModel
     public int ScoreBoardId { get; set; }
     public string ParticipantName { get; set; } = string.Empty;
     public int Points { get; set; }
-    public float Timer { get; set; } 
 
     public string Validate()
     {
