@@ -10,32 +10,35 @@ public class ScoreBoardRepository : IRepository<ScoreBoard>
 {
 	IConnectionHelper<SQLiteConnection> _connectionHelper;
 	const string TABLE = "scoreBoard";
-	private readonly CommonDBModules<ScoreBoard> _commonDBModules;
 
 	public ScoreBoardRepository(IConnectionHelper<SQLiteConnection> connectionHelper)
 	{
 		_connectionHelper = connectionHelper;
-		_commonDBModules = new(_connectionHelper);
 	}
-
-    private ScoreBoard ReadRow(SQLiteDataReader reader)
-    {
-        return new ScoreBoard
-        {
-            ScoreBoardId = reader.GetInt32(0),
-            Name = reader.GetString(1),
-            Description = reader.GetString(2),
-            UniqueKey = reader.GetString(3),
-            SettingId = reader.GetInt32(4)
-        };
-    }
 
     public IEnumerable<ScoreBoard> GetAll()
     {
-        
-        return _commonDBModules.ExecuteQuery($@" 
+		using SQLiteConnection conn = _connectionHelper.GetConnection();
+		SQLiteCommand cmd = conn.CreateCommand();
+		cmd.CommandText = $@" 
         SELECT scoreBoardId, name, description, uniqueKey, settingId 
-        FROM {TABLE}", ReadRow);
+        FROM {TABLE}";
+        var reader = cmd.ExecuteReader();
+        List<ScoreBoard> result = new List<ScoreBoard>();
+        
+        while (reader.Read())
+        {
+            result.Add(new ScoreBoard
+			{
+				ScoreBoardId = reader.GetInt32(0),
+				Name = reader.GetString(1),
+				Description = reader.GetString(2),
+				UniqueKey = reader.GetString(3),
+				SettingId = reader.GetInt32(4)
+			});
+        }
+
+        return result;
     }
 
     public ScoreBoard? GetById(int id)
@@ -43,12 +46,28 @@ public class ScoreBoardRepository : IRepository<ScoreBoard>
         using SQLiteConnection conn = _connectionHelper.GetConnection();
         SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
-        SELECT scoreBoardId, name, description, uniqueKey, settingId 
+        SELECT  scoreBoardId, name, description, uniqueKey, settingId 
         FROM {TABLE}
         WHERE scoreBoardId = @id";
         cmd.Parameters.AddWithValue("@id", id);
 
-        return _commonDBModules.ExecuteSingleQuery(cmd, ReadRow);
+        var reader = cmd.ExecuteReader();
+        if (reader.Read())
+        {
+            return new ScoreBoard
+            {
+                ScoreBoardId = reader.GetInt32(0),
+                Name = reader.GetString(1),
+                Description = reader.GetString(2),
+                UniqueKey = reader.GetString(3),
+                SettingId = reader.GetInt32(4)
+            };
+
+		}
+        else
+        {
+            return null;
+        }
     }
 
     public void Add(ScoreBoard model)

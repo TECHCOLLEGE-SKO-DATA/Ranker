@@ -13,8 +13,6 @@ internal class ConsoleConnectionHelper : IConnectionHelper<SQLiteConnection>
 {
 	public string DatabaseName => "../../../../Ranker.Lib/SQLite/database.db";
 
-
-
     public SQLiteConnection GetConnection()
 	{
 		SQLiteConnection conn = new ($"Data Source={DatabaseName};");
