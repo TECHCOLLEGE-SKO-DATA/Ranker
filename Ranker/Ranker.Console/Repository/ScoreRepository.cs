@@ -35,26 +35,68 @@ public class ScoreRepository : IRepository<Score>
 
     public void Add(Score model)
 	{
-		throw new NotImplementedException();
-	}
+        using SQLiteConnection conn = _connectionHelper.GetConnection();
+        SQLiteCommand cmd = conn.CreateCommand();
+        cmd.CommandText = $@"
+        INSERT INTO {TABLE} (participantName, points, timer, scoreBoardId) 
+        VALUES (@participantName, @points, @timer, @scoreBoardId)";
+
+        cmd.Parameters.AddWithValue("@participantName", model.ParticipantName);
+        cmd.Parameters.AddWithValue("@points", model.Points);
+        cmd.Parameters.AddWithValue("@timer", model.Timer);
+        cmd.Parameters.AddWithValue("@scoreBoardId", model.ScoreBoardId);
+
+        cmd.ExecuteNonQuery();
+    }
 
 	public void Delete(int id)
 	{
-		throw new NotImplementedException();
-	}
+        using SQLiteConnection conn = _connectionHelper.GetConnection();
+        SQLiteCommand cmd = conn.CreateCommand();
+        cmd.CommandText = $@"
+        DELETE FROM {TABLE} 
+        WHERE scoreId = @id";
+
+        cmd.Parameters.AddWithValue("@id", id);
+
+        cmd.ExecuteNonQuery();
+    }
 
 	public IEnumerable<Score> GetAll()
 	{
-		throw new NotImplementedException();
-	}
+        return _commonDBModules.ExecuteQuery($@" 
+        SELECT scoreId, participantName, points, timer, scoreBoardId
+        FROM {TABLE}", ReadRow);
+    }
 
 	public Score? GetById(int id)
 	{
-		throw new NotImplementedException();
-	}
+        using SQLiteConnection conn = _connectionHelper.GetConnection();
+        SQLiteCommand cmd = conn.CreateCommand();
+        cmd.CommandText = $@"
+        SELECT scoreId, participantName, points, timer, scoreBoardId
+        FROM {TABLE}
+        WHERE scoreId = @id";
+        cmd.Parameters.AddWithValue("@id", id);
+
+        return _commonDBModules.ExecuteSingleQuery(cmd, ReadRow);
+    }
 
 	public void Update(Score model)
 	{
-		throw new NotImplementedException();
-	}
+        using SQLiteConnection conn = _connectionHelper.GetConnection();
+        SQLiteCommand cmd = conn.CreateCommand();
+        cmd.CommandText = $@"
+        UPDATE {TABLE} 
+        SET participantName = @participantName, points = @points, timer = @timer
+        WHERE scoreId = @scoreId";
+
+
+        cmd.Parameters.AddWithValue("@participantName", model.ParticipantName);
+        cmd.Parameters.AddWithValue("@points", model.Points);
+        cmd.Parameters.AddWithValue("@timer", model.Timer);
+        cmd.Parameters.AddWithValue("@scoreId", model.ScoreId);
+
+        cmd.ExecuteNonQuery();
+    }
 }

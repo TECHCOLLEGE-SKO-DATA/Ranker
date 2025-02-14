@@ -1,4 +1,6 @@
 ﻿--DROP TABLE IF EXISTS scoreBoard;
+--DROP TABLE IF EXISTS score;
+
 CREATE TABLE scoreBoard (
     scoreBoardId INTEGER PRIMARY KEY AUTOINCREMENT, 
     name TEXT NOT NULL, 
@@ -7,8 +9,6 @@ CREATE TABLE scoreBoard (
     settingId INTEGER NOT NULL
 );
 
-
---DROP TABLE IF EXISTS score;
 CREATE TABLE score (
     scoreId INTEGER PRIMARY KEY AUTOINCREMENT, 
     participantName TEXT NOT NULL, 
