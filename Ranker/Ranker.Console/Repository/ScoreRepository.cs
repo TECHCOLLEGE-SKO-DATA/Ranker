@@ -20,7 +20,10 @@ public class ScoreRepository : IRepository<Score>
         _connectionHelper = connectionHelper;
     }
 
-    private Score ReadRow(SQLiteDataReader reader)
+    string sqlRowsToSelect = "scoreId, participantName, points, scoreBoardId";
+
+
+	private Score ReadRow(SQLiteDataReader reader)
     {
         return new Score()
         {
@@ -30,6 +33,33 @@ public class ScoreRepository : IRepository<Score>
             Points = reader.GetInt32(3)
         };
     }
+
+    public IEnumerable<Score> GetFromScoreBoardId(int id)
+    {
+		using SQLiteConnection conn = _connectionHelper.GetConnection();
+		SQLiteCommand cmd = conn.CreateCommand();
+		cmd.CommandText = $@" 
+        SELECT {sqlRowsToSelect}
+        FROM {TABLE} WHERE scoreBoardId = {id}";
+
+
+
+		using SQLiteDataReader reader = cmd.ExecuteReader();
+		List<Score> scores = new();
+
+		while (reader.Read())
+		{
+			scores.Add(new Score
+			{
+				ScoreId = reader.GetInt32(0),
+				ParticipantName = reader.GetString(1),
+				Points = reader.GetInt32(2),
+				ScoreBoardId = reader.GetInt32(3),
+			});
+		}
+
+		return scores;
+	}
 
     public void Add(Score model)
 	{
@@ -64,7 +94,7 @@ public class ScoreRepository : IRepository<Score>
         using SQLiteConnection conn = _connectionHelper.GetConnection();
         SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@" 
-        SELECT scoreId, participantName, points, timer, scoreBoardId
+        SELECT {sqlRowsToSelect}
         FROM {TABLE}";
 
 
@@ -92,7 +122,7 @@ public class ScoreRepository : IRepository<Score>
         using SQLiteConnection conn = _connectionHelper.GetConnection();
         SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
-        SELECT scoreId, participantName, points, timer, scoreBoardId
+        SELECT {sqlRowsToSelect}
         FROM {TABLE}
         WHERE scoreId = @id";
         cmd.Parameters.AddWithValue("@id", id);
