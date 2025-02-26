@@ -91,7 +91,7 @@ class UserInterface
         System.Console.WriteLine("Indtast deltagers navn: ");
         string? participantName = System.Console.ReadLine();
 
-        if (string.IsNullOrEmpty(participantName))
+        if (string.IsNullOrWhiteSpace(participantName))
         {
             System.Console.WriteLine("Den må ikke være tom");
             return;
@@ -100,7 +100,7 @@ class UserInterface
         System.Console.WriteLine("Indtast points: ");
         string? pointsInput = System.Console.ReadLine();
 
-		if (string.IsNullOrEmpty(pointsInput) || !int.TryParse(pointsInput, out int points))
+		if (string.IsNullOrWhiteSpace(pointsInput) || !int.TryParse(pointsInput, out int points))
         {
             System.Console.WriteLine("Den må ikke være tom");
             return;
@@ -129,14 +129,13 @@ class UserInterface
 
 	void DeleteScore()
 	{
-		System.Console.Clear();
+		
 
 	}
 
 	void CreateScoreBoard()
 	{
 		System.Console.Clear();
-
 		string name = Input("name: ");
 		string description = Input("description: ");
 
@@ -145,5 +144,10 @@ class UserInterface
 			Name = name,
 			Description = description,
 		});
+	}
+
+	void DeleteScoreBoard()
+	{
+
 	}
 }
