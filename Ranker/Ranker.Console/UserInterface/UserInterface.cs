@@ -61,7 +61,7 @@ class UserInterface
 		switch (System.Console.ReadLine().ToLower())
 		{
 			case "add":
-				CreateScore();
+				CreateScore(scoreBoard);
 				break;
 		}
 	}
@@ -71,8 +71,49 @@ class UserInterface
 		DrawScoreBoards();
 	}
 
-	void CreateScore()
+    private void CreateScore(ScoreBoard scoreBoard)
+    {
+        System.Console.WriteLine("Indtast deltagers navn: ");
+        string? participantName = System.Console.ReadLine();
+
+        if (string.IsNullOrEmpty(participantName))
+        {
+            System.Console.WriteLine("Den må ikke være tom");
+            return;
+        }
+
+        System.Console.WriteLine("Indtast points: ");
+        string? pointsInput = System.Console.ReadLine();
+
+		if (string.IsNullOrEmpty(pointsInput) || !int.TryParse(pointsInput, out int points))
+        {
+            System.Console.WriteLine("Den må ikke være tom");
+            return;
+        }
+
+		Score newScore = new Score
+		{
+			ParticipantName = participantName,
+			Points = points,
+			ScoreBoardId = scoreBoard.ScoreBoardId
+		};
+
+
+        scoreRepo.Add(newScore);
+
+        System.Console.WriteLine("Scoren Blev Tilføjet");
+    }
+
+
+
+
+    void UpdateScore()
+    {
+
+    }
+
+	void DeleteScore()
 	{
-		
+
 	}
 }
