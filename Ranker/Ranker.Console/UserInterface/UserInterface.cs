@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Ranker.Console.UserInterface;
 
@@ -21,9 +22,16 @@ class UserInterface
 		scoreBoardRepo = new(_connectionHelper);
 	}
 
+	string Input(string message)
+	{
+		System.Console.Write(message);
+		string? text = System.Console.ReadLine();
+		return text != null ? text : "";
+	}
+
 	void DrawScoreBoards()
 	{
-
+		System.Console.Clear();
 		var data = (List<ScoreBoard>)scoreBoardRepo.GetAll();
 
 		for (int i = 0; i < data.Count(); i++)
@@ -31,21 +39,29 @@ class UserInterface
 			System.Console.WriteLine($"nr.{i} : {data[i].Name}");
 		}
 
-		string? userInput = "";
-		int userInputNumber = 0;
-
+		bool exitLoop;
 		do
 		{
-			System.Console.WriteLine("intast nummer på scoreboard du vil se: ");
-			userInput = System.Console.ReadLine();
-		} while (userInput == null && int.TryParse(userInput, out userInputNumber) && userInputNumber >= 0 && userInputNumber < data.Count());
-
-		DrawScores(data[userInputNumber]);
+			exitLoop = true;
+			switch (Input("Choose command: add, delete, update, exit or write number to pick a scoreboard to inspect").ToLower())
+			{
+				case "add":
+					CreateScoreBoard();
+					break;
+				case string str when int.TryParse(str, out int scoreBoardIndex) && scoreBoardIndex < data.Count() && scoreBoardIndex >= 0:
+					DrawScores(data[scoreBoardIndex]);
+					break;
+				default:
+					exitLoop = false;
+					continue;
+			}
+		} while (!exitLoop);
+		
 	}
 
 	void DrawScores(ScoreBoard scoreBoard)
 	{
-		System.Console.WriteLine();
+		System.Console.Clear();
 		string scoreboardText = "-----------------------------------\n";
 
 		var scores = scoreRepo.GetFromScoreBoardId(scoreBoard.ScoreBoardId);
@@ -54,12 +70,11 @@ class UserInterface
 		{
 			scoreboardText += $"| {score.ParticipantName} | {score.Points} |\n" +
 			"----------------------------------------------------\n";
-
 		}
 
 		System.Console.WriteLine(scoreboardText);
 
-		switch (System.Console.ReadLine().ToLower())
+		switch (Input("").ToLower())
 		{
 			case "add":
 				CreateScore(scoreBoard);
@@ -115,7 +130,22 @@ class UserInterface
 
 	void DeleteScore()
 	{
+		System.Console.Clear();
 
+	}
+
+	void CreateScoreBoard()
+	{
+		System.Console.Clear();
+
+		string name = Input("name: ");
+		string description = Input("description: ");
+
+		scoreBoardRepo.Add(new ScoreBoard()
+		{
+			Name = name,
+			Description = description,
+		});
 	}
 
     public string CreatePassword()

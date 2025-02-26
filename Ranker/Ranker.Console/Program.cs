@@ -20,7 +20,7 @@ class Program
             scoreBoardId INTEGER PRIMARY KEY AUTOINCREMENT, 
             name TEXT NOT NULL, 
             description TEXT NOT NULL, 
-            uniqueKey TEXT NOT NULL UNIQUE, 
+            uniqueKey TEXT NOT NULL UNIQUE CHECK(LENGTH(username) = 8), 
             settingId INTEGER NOT NULL
             );");
 
