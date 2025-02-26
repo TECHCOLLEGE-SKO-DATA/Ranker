@@ -1,6 +1,6 @@
 ﻿namespace Ranker.Lib.Models;
 
-public class ScoreBoard : BaseModel, IModel 
+public class ScoreBoard : BaseModel, IModel
 {
     public int ScoreBoardId { get; set; }
     public string Name { get; set; } = String.Empty;
@@ -8,7 +8,7 @@ public class ScoreBoard : BaseModel, IModel
     public string UniqueKey = String.Empty;
     public int SettingId { get; set; }
 
-    public string Validate() 
+    public string Validate()
     {
         if (ScoreBoardId <= 0)
         {
@@ -29,5 +29,4 @@ public class ScoreBoard : BaseModel, IModel
 
         return "";
     }
-
 }

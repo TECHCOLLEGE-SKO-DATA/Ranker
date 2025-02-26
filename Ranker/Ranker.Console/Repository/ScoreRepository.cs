@@ -1,29 +1,22 @@
 ﻿using Ranker.Lib.Models;
 using Ranker.Lib.Repository;
-using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ranker.Console.Repository;
 
 public class ScoreRepository : IRepository<Score>
 {
-    IConnectionHelper<SQLiteConnection> _connectionHelper;
-    const string TABLE = "score";
+    private IConnectionHelper<SQLiteConnection> _connectionHelper;
+    private const string TABLE = "score";
 
     public ScoreRepository(IConnectionHelper<SQLiteConnection> connectionHelper)
     {
         _connectionHelper = connectionHelper;
     }
 
-    string sqlRowsToSelect = "scoreId, participantName, points, scoreBoardId";
+    private string sqlRowsToSelect = "scoreId, participantName, points, scoreBoardId";
 
-
-	private Score ReadRow(SQLiteDataReader reader)
+    private Score ReadRow(SQLiteDataReader reader)
     {
         return new Score()
         {
@@ -36,37 +29,35 @@ public class ScoreRepository : IRepository<Score>
 
     public IEnumerable<Score> GetFromScoreBoardId(int id)
     {
-		using SQLiteConnection conn = _connectionHelper.GetConnection();
-		SQLiteCommand cmd = conn.CreateCommand();
-		cmd.CommandText = $@" 
-        SELECT {sqlRowsToSelect}
-        FROM {TABLE} WHERE scoreBoardId = {id}";
-
-
-
-		using SQLiteDataReader reader = cmd.ExecuteReader();
-		List<Score> scores = new();
-
-		while (reader.Read())
-		{
-			scores.Add(new Score
-			{
-				ScoreId = reader.GetInt32(0),
-				ParticipantName = reader.GetString(1),
-				Points = reader.GetInt32(2),
-				ScoreBoardId = reader.GetInt32(3),
-			});
-		}
-
-		return scores;
-	}
-
-    public void Add(Score model)
-	{
         using SQLiteConnection conn = _connectionHelper.GetConnection();
         SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
-        INSERT INTO {TABLE} (participantName, points, scoreBoardId) 
+        SELECT {sqlRowsToSelect}
+        FROM {TABLE} WHERE scoreBoardId = {id}";
+
+        using SQLiteDataReader reader = cmd.ExecuteReader();
+        List<Score> scores = new();
+
+        while (reader.Read())
+        {
+            scores.Add(new Score
+            {
+                ScoreId = reader.GetInt32(0),
+                ParticipantName = reader.GetString(1),
+                Points = reader.GetInt32(2),
+                ScoreBoardId = reader.GetInt32(3),
+            });
+        }
+
+        return scores;
+    }
+
+    public void Add(Score model)
+    {
+        using SQLiteConnection conn = _connectionHelper.GetConnection();
+        SQLiteCommand cmd = conn.CreateCommand();
+        cmd.CommandText = $@"
+        INSERT INTO {TABLE} (participantName, points, scoreBoardId)
         VALUES (@participantName, @points, @scoreBoardId)";
 
         cmd.Parameters.AddWithValue("@participantName", model.ParticipantName);
@@ -76,12 +67,12 @@ public class ScoreRepository : IRepository<Score>
         cmd.ExecuteNonQuery();
     }
 
-	public void Delete(int id)
-	{
+    public void Delete(int id)
+    {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
         SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
-        DELETE FROM {TABLE} 
+        DELETE FROM {TABLE}
         WHERE scoreId = @id";
 
         cmd.Parameters.AddWithValue("@id", id);
@@ -89,15 +80,13 @@ public class ScoreRepository : IRepository<Score>
         cmd.ExecuteNonQuery();
     }
 
-	public IEnumerable<Score> GetAll()
-	{
+    public IEnumerable<Score> GetAll()
+    {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
         SQLiteCommand cmd = conn.CreateCommand();
-        cmd.CommandText = $@" 
+        cmd.CommandText = $@"
         SELECT {sqlRowsToSelect}
         FROM {TABLE}";
-
-
 
         using SQLiteDataReader reader = cmd.ExecuteReader();
         List<Score> scores = new();
@@ -114,11 +103,10 @@ public class ScoreRepository : IRepository<Score>
         }
 
         return scores;
-
     }
 
-	public Score? GetById(int id)
-	{
+    public Score? GetById(int id)
+    {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
         SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
@@ -144,21 +132,19 @@ public class ScoreRepository : IRepository<Score>
         return null;
     }
 
-	public void Update(Score model)
-	{
+    public void Update(Score model)
+    {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
         SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
-        UPDATE {TABLE} 
+        UPDATE {TABLE}
         SET participantName = @participantName, points = @points
         WHERE scoreId = @scoreId";
-
 
         cmd.Parameters.AddWithValue("@participantName", model.ParticipantName);
         cmd.Parameters.AddWithValue("@points", model.Points);
         cmd.Parameters.AddWithValue("@scoreId", model.ScoreId);
 
         cmd.ExecuteNonQuery();
-
     }
 }

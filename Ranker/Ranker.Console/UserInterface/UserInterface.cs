@@ -1,91 +1,86 @@
 ﻿using Ranker.Console.Repository;
 using Ranker.Lib.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Ranker.Console.UserInterface;
 
-class UserInterface
+internal class UserInterface
 {
-	ConsoleConnectionHelper _connectionHelper = new();
-	ScoreBoardRepository scoreBoardRepo;
-	ScoreRepository scoreRepo;
+    private ConsoleConnectionHelper _connectionHelper = new();
+    private ScoreBoardRepository scoreBoardRepo;
+    private ScoreRepository scoreRepo;
 
-	public UserInterface()
-	{
-		scoreRepo = new(_connectionHelper);
-		scoreBoardRepo = new(_connectionHelper);
-	}
+    public UserInterface()
+    {
+        scoreRepo = new(_connectionHelper);
+        scoreBoardRepo = new(_connectionHelper);
+    }
 
-	string Input(string message)
-	{
-		System.Console.Write(message);
-		string? text = System.Console.ReadLine();
-		return text != null ? text : "";
-	}
+    private string Input(string message)
+    {
+        System.Console.Write(message);
+        string? text = System.Console.ReadLine();
+        return text != null ? text : "";
+    }
 
-	void DrawScoreBoards()
-	{
-		System.Console.Clear();
-		var data = (List<ScoreBoard>)scoreBoardRepo.GetAll();
+    private void DrawScoreBoards()
+    {
+        System.Console.Clear();
+        var data = (List<ScoreBoard>)scoreBoardRepo.GetAll();
 
-		for (int i = 0; i < data.Count(); i++)
-		{
-			System.Console.WriteLine($"nr.{i} : {data[i].Name}");
-		}
+        for (int i = 0; i < data.Count(); i++)
+        {
+            System.Console.WriteLine($"nr.{i} : {data[i].Name}");
+        }
 
-		bool exitLoop;
-		do
-		{
-			exitLoop = true;
-			switch (Input("Choose command: add, delete, update, exit or write number to pick a scoreboard to inspect").ToLower())
-			{
-				case "add":
-					CreateScoreBoard();
-					break;
-				case string str when int.TryParse(str, out int scoreBoardIndex) && scoreBoardIndex < data.Count() && scoreBoardIndex >= 0:
-					DrawScores(data[scoreBoardIndex]);
-					break;
-				default:
-					exitLoop = false;
-					continue;
-			}
-		} while (!exitLoop);
-		
-	}
+        bool exitLoop;
+        do
+        {
+            exitLoop = true;
+            switch (Input("Choose command: add, delete, update, exit or write number to pick a scoreboard to inspect").ToLower())
+            {
+                case "add":
+                    CreateScoreBoard();
+                    break;
 
-	void DrawScores(ScoreBoard scoreBoard)
-	{
-		System.Console.Clear();
-		string scoreboardText = "-----------------------------------\n";
+                case string str when int.TryParse(str, out int scoreBoardIndex) && scoreBoardIndex < data.Count() && scoreBoardIndex >= 0:
+                    DrawScores(data[scoreBoardIndex]);
+                    break;
 
-		var scores = scoreRepo.GetFromScoreBoardId(scoreBoard.ScoreBoardId);
+                default:
+                    exitLoop = false;
+                    continue;
+            }
+        } while (!exitLoop);
+    }
 
-		foreach (Score score in scores)
-		{
-			scoreboardText += $"| {score.ParticipantName} | {score.Points} |\n" +
-			"----------------------------------------------------\n";
-		}
+    private void DrawScores(ScoreBoard scoreBoard)
+    {
+        System.Console.Clear();
+        string scoreboardText = "-----------------------------------\n";
 
-		System.Console.WriteLine(scoreboardText);
+        var scores = scoreRepo.GetFromScoreBoardId(scoreBoard.ScoreBoardId);
 
-		switch (Input("").ToLower())
-		{
-			case "add":
-				CreateScore(scoreBoard);
-				break;
-		}
-	}
+        foreach (Score score in scores)
+        {
+            scoreboardText += $"| {score.ParticipantName} | {score.Points} |\n" +
+            "----------------------------------------------------\n";
+        }
 
-	public void Draw()
-	{
-		DrawScoreBoards();
-	}
+        System.Console.WriteLine(scoreboardText);
+
+        switch (Input("").ToLower())
+        {
+            case "add":
+                CreateScore(scoreBoard);
+                break;
+        }
+    }
+
+    public void Draw()
+    {
+        DrawScoreBoards();
+    }
 
     private void CreateScore(ScoreBoard scoreBoard)
     {
@@ -101,55 +96,48 @@ class UserInterface
         System.Console.WriteLine("Indtast points: ");
         string? pointsInput = System.Console.ReadLine();
 
-		if (string.IsNullOrWhiteSpace(pointsInput) || !int.TryParse(pointsInput, out int points))
+        if (string.IsNullOrWhiteSpace(pointsInput) || !int.TryParse(pointsInput, out int points))
         {
             System.Console.WriteLine("Den må ikke være tom");
             return;
         }
 
-		Score newScore = new Score
-		{
-			ParticipantName = participantName,
-			Points = points,
-			ScoreBoardId = scoreBoard.ScoreBoardId
-		};
-
+        Score newScore = new Score
+        {
+            ParticipantName = participantName,
+            Points = points,
+            ScoreBoardId = scoreBoard.ScoreBoardId
+        };
 
         scoreRepo.Add(newScore);
 
         System.Console.WriteLine("Scoren Blev Tilføjet");
     }
 
-
-
-
-    void UpdateScore()
+    private void UpdateScore()
     {
-
     }
 
-	void DeleteScore()
-	{
-		
+    private void DeleteScore()
+    {
+    }
 
-	}
+    private void CreateScoreBoard()
+    {
+        System.Console.Clear();
+        string name = Input("name: ");
+        string description = Input("description: ");
 
-	void CreateScoreBoard()
-	{
-		System.Console.Clear();
-		string name = Input("name: ");
-		string description = Input("description: ");
-
-		scoreBoardRepo.Add(new ScoreBoard()
-		{
-			Name = name,
-			Description = description,
-		});
-	}
+        scoreBoardRepo.Add(new ScoreBoard()
+        {
+            Name = name,
+            Description = description,
+        });
+    }
 
     public string CreatePassword()
     {
-		int length = 8;
+        int length = 8;
         const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder res = new StringBuilder();
         Random rnd = new Random();
@@ -160,9 +148,7 @@ class UserInterface
         return res.ToString();
     }
 
-
-	void DeleteScoreBoard()
-	{
-
-	}
+    private void DeleteScoreBoard()
+    {
+    }
 }
