@@ -1,16 +1,10 @@
 ﻿using Ranker.Console.Repository;
 using Ranker.Lib.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Ranker.Console.UserInterface;
 
-class UserInterface
+internal class UserInterface
 {
 	ConsoleConnectionHelper _connectionHelper = new();
 	ScoreBoardRepository scoreBoardRepo;
@@ -21,12 +15,12 @@ class UserInterface
 		scoreBoardRepo = new(_connectionHelper);
 	}
 
-	string Input(string message)
-	{
-		System.Console.Write(message);
-		string? text = System.Console.ReadLine();
-		return text != null ? text : "";
-	}
+    private string Input(string message)
+    {
+        System.Console.Write(message);
+        string? text = System.Console.ReadLine();
+        return text != null ? text : "";
+    }
 
 	string InputNotWhiteSpace(string message)
 	{
@@ -83,10 +77,10 @@ class UserInterface
 		
 	}
 
-	void DrawScores(ScoreBoard scoreBoard)
-	{
-		System.Console.Clear();
-		string scoreboardText = "-----------------------------------\n";
+    private void DrawScores(ScoreBoard scoreBoard)
+    {
+        System.Console.Clear();
+        string scoreboardText = "-----------------------------------\n";
 
 		List<Score> scores = (List<Score>)scoreRepo.GetFromScoreBoardId(scoreBoard.ScoreBoardId);
 
@@ -121,10 +115,10 @@ class UserInterface
 		}
 	}
 
-	public void Draw()
-	{
-		DrawScoreBoards();
-	}
+    public void Draw()
+    {
+        DrawScoreBoards();
+    }
 
     private void CreateScore(ScoreBoard scoreBoard)
     {

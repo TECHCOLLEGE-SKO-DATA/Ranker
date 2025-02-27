@@ -1,30 +1,24 @@
-﻿using System.Data.SQLite;
-using Ranker.Lib.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
+﻿using Ranker.Lib.Repository;
+using System.Data.SQLite;
 
 namespace Ranker.Console.Repository;
 
 internal class ConsoleConnectionHelper : IConnectionHelper<SQLiteConnection>
 {
-	public string DatabaseName => "../../../../Ranker.Lib/SQLite/database.db";
+    public string DatabaseName => "../../../../Ranker.Lib/SQLite/database.db";
 
     public SQLiteConnection GetConnection()
-	{
-		SQLiteConnection conn = new ($"Data Source={DatabaseName};");
-		conn.Open();
-		return conn;
-	}
+    {
+        SQLiteConnection conn = new($"Data Source={DatabaseName};");
+        conn.Open();
+        return conn;
+    }
 
-	public void ExecuteNonQuery(string sql)
-	{
-		using SQLiteConnection connection = GetConnection();
-		SQLiteCommand cmd = connection.CreateCommand();
-		cmd.CommandText = sql;
-		cmd.ExecuteNonQuery();
-	}
+    public void ExecuteNonQuery(string sql)
+    {
+        using SQLiteConnection connection = GetConnection();
+        SQLiteCommand cmd = connection.CreateCommand();
+        cmd.CommandText = sql;
+        cmd.ExecuteNonQuery();
+    }
 }
