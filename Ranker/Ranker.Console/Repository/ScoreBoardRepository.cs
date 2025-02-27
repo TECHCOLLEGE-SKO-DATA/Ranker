@@ -41,6 +41,20 @@ public class ScoreBoardRepository : IRepository<ScoreBoard>
         return result;
     }
 
+    public bool IsUniqueKey(string key)
+    {
+		using SQLiteConnection conn = _connectionHelper.GetConnection();
+		SQLiteCommand cmd = conn.CreateCommand();
+		cmd.CommandText = $@" 
+        SELECT scoreBoardId
+        FROM {TABLE} WHERE uniqueKey = @uniqueKey";
+
+        cmd.Parameters.AddWithValue("uniqueKey", key);
+		var reader = cmd.ExecuteReader();
+
+        return !reader.Read();
+	}
+
     public ScoreBoard? GetById(int id)
     {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
@@ -116,10 +130,4 @@ public class ScoreBoardRepository : IRepository<ScoreBoard>
 
         cmd.ExecuteNonQuery();
     }
-
 }
-
-
-
-
-

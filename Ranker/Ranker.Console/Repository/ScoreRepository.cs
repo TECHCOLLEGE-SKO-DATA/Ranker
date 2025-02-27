@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Reflection.PortableExecutable;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,7 +41,8 @@ public class ScoreRepository : IRepository<Score>
 		SQLiteCommand cmd = conn.CreateCommand();
 		cmd.CommandText = $@" 
         SELECT {sqlRowsToSelect}
-        FROM {TABLE} WHERE scoreBoardId = {id}";
+        FROM {TABLE} WHERE scoreBoardId = {id}
+        ORDER BY points DESC";
 
 
 
