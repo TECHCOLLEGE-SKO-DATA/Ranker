@@ -41,17 +41,17 @@ public class ScoreBoardRepository : IRepository<ScoreBoard>
 
     public bool IsUniqueKey(string key)
     {
-		using SQLiteConnection conn = _connectionHelper.GetConnection();
-		SQLiteCommand cmd = conn.CreateCommand();
-		cmd.CommandText = $@" 
+        using SQLiteConnection conn = _connectionHelper.GetConnection();
+        SQLiteCommand cmd = conn.CreateCommand();
+        cmd.CommandText = $@"
         SELECT scoreBoardId
         FROM {TABLE} WHERE uniqueKey = @uniqueKey";
 
         cmd.Parameters.AddWithValue("uniqueKey", key);
-		var reader = cmd.ExecuteReader();
+        var reader = cmd.ExecuteReader();
 
         return !reader.Read();
-	}
+    }
 
     public ScoreBoard? GetById(int id)
     {

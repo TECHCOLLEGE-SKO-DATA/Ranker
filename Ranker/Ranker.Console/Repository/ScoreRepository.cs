@@ -1,11 +1,6 @@
 ﻿using Ranker.Lib.Models;
 using Ranker.Lib.Repository;
 using System.Data.SQLite;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ranker.Console.Repository;
 
