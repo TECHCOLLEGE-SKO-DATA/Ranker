@@ -5,7 +5,7 @@ public class ScoreBoard : BaseModel, IModel
     public int ScoreBoardId { get; set; }
     public string Name { get; set; } = String.Empty;
     public string Description { get; set; } = String.Empty;
-    public string UniqueKey = String.Empty;
+    public string UniqueKey { get; set; } = String.Empty;
     public int SettingId { get; set; }
 
     public string Validate()

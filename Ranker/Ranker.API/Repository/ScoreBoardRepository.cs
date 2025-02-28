@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+using Ranker.Lib;
 using Ranker.Lib.Models;
 using Ranker.Lib.Repository;
 using System.Data.SQLite;
@@ -89,12 +91,24 @@ public class ScoreBoardRepository : IRepository<ScoreBoard>
         INSERT INTO {TABLE} (name, description, uniqueKey, settingId)
         VALUES (@name, @description, @uniqueKey, @settingId)";
 
+        do
+        {
+            model.UniqueKey = Utility.CreateScoreboardUniqueKey();
+        }
+        while (!IsUniqueKey(model.UniqueKey));
+
         cmd.Parameters.AddWithValue("@name", model.Name);
         cmd.Parameters.AddWithValue("@description", model.Description);
         cmd.Parameters.AddWithValue("@uniqueKey", model.UniqueKey);
         cmd.Parameters.AddWithValue("@settingId", model.SettingId);
 
         cmd.ExecuteNonQuery();
+
+        cmd = conn.CreateCommand();
+        cmd.CommandText = "SELECT last_insert_rowid()";
+        var reader = cmd.ExecuteReader();
+        reader.Read();
+        model.ScoreBoardId = reader.GetInt32(0);
     }
 
     public void Update(ScoreBoard model)
