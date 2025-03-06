@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ranker.API.Repository;
 using Ranker.Console.Repository;
+using Ranker.Lib;
 using Ranker.Lib.Models;
 
 namespace Ranker.API.Controllers;
@@ -19,27 +20,48 @@ public class ScoreBoardController : Controller
     [HttpGet]
     public IEnumerable<ScoreBoard> Get()
     {
-        ConsoleConnectionHelper _connHelper = new();
+        APIConnectionHelper _connHelper = new();
         ScoreBoardRepository repository = new(_connHelper);
 
-        return repository.GetAll().ToArray();
+        return repository.GetAll();
     }
 
-    [HttpGet("single/{uniqueKey}")]
+    [HttpGet("single{uniqueKey}")]
     public ScoreBoard Get(string uniqueKey)
     {
-        ConsoleConnectionHelper _connHelper = new();
+        APIConnectionHelper _connHelper = new();
         ScoreBoardRepository repository = new(_connHelper);
+        ScoreBoard? scoreBoard = repository.GetByUniqueKey(uniqueKey);
 
-        return repository.GetById(1);
+		return scoreBoard == null ? new ScoreBoard() : scoreBoard;
     }
 
-    [HttpPost("create")]
+    [HttpDelete("{uniqueKey}")]
+    public ActionResult DeleteScoreBoard(string uniqueKey)
+	{
+		APIConnectionHelper _connHelper = new();
+		ScoreBoardRepository repository = new(_connHelper);
+
+		try
+		{
+			repository.DeleteByUniqueKey(uniqueKey);
+			return Ok();
+		}
+		catch (Exception e)
+		{
+			return BadRequest(e.Message);
+		}
+	}
+
+
+	[HttpPost("{board}")]
     public ActionResult CreateScoreBoard(ScoreBoard board)
     {
-        ConsoleConnectionHelper _connHelper = new();
+        APIConnectionHelper _connHelper = new();
         ScoreBoardRepository repository = new(_connHelper);
-        try
+        board.UniqueKey = Utility.CreateScoreboardUniqueKey();
+
+		try
         {
             repository.Add(board);
             return Ok(board);
@@ -50,4 +72,21 @@ public class ScoreBoardController : Controller
         }
 
     }
+
+    [HttpPut("{board}")]
+    public ActionResult UpdateScoreBoard(ScoreBoard board)
+    {
+		APIConnectionHelper _connHelper = new();
+		ScoreBoardRepository repository = new(_connHelper);
+
+        try
+        {
+            repository.UpdateByUniqueKey(board);
+            return Ok();
+		}
+        catch (Exception e)
+		{
+			return BadRequest(e.Message);
+		}
+	}
 }

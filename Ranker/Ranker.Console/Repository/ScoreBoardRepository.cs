@@ -127,4 +127,15 @@ public class ScoreBoardRepository : IRepository<ScoreBoard>
 
         cmd.ExecuteNonQuery();
     }
+
+    public void DeleteByUniqueKey(string key)
+	{
+		using SQLiteConnection conn = _connectionHelper.GetConnection();
+		SQLiteCommand cmd = conn.CreateCommand();
+		cmd.CommandText = $@"
+        DELETE FROM {TABLE}
+        WHERE uniqueKey = @uniqueKey";
+		cmd.Parameters.AddWithValue("@uniqueKey", key);
+		cmd.ExecuteNonQuery();
+	}
 }

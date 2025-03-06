@@ -40,7 +40,7 @@ internal class UserInterface
 
         for (int i = 0; i < data.Count(); i++)
         {
-            System.Console.WriteLine($"nr.{i + 1} : {data[i].Name}");
+            System.Console.WriteLine($"nr.{i + 1} : {data[i].Name} : {data[i].Description}");
         }
 
         bool exitLoop;
@@ -200,7 +200,7 @@ internal class UserInterface
                 Name = InputNotWhiteSpace("name: "),
                 Description = InputNotWhiteSpace("description: "),
                 UniqueKey = CreatePassword(),
-                SettingId = 1,
+                SettingId = int.Parse(Input("setings id: ")),
             };
 
             scoreBoardRepo.Add(scoreBoard);

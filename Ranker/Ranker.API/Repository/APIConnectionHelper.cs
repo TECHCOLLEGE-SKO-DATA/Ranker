@@ -3,11 +3,13 @@ using System.Data.SQLite;
 
 namespace Ranker.Console.Repository;
 
-internal class ConsoleConnectionHelper : IConnectionHelper<SQLiteConnection>
+internal class APIConnectionHelper : IConnectionHelper<SQLiteConnection>
 {
     public string DatabaseName => @"..\..\Ranker.Lib\SQLite/database.db";
+    public string CommandSetting => "PRAGMA foreign_keys = ON;";
 
-    public SQLiteConnection GetConnection()
+
+	public SQLiteConnection GetConnection()
     {
         string noget = Environment.CurrentDirectory + DatabaseName;
         if (File.Exists(noget))
@@ -17,6 +19,7 @@ internal class ConsoleConnectionHelper : IConnectionHelper<SQLiteConnection>
             conn.Open();
             return conn;
         }
+        
         return null;
     }
 

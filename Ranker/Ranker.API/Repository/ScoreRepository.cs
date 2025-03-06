@@ -16,21 +16,10 @@ public class ScoreRepository : IRepository<Score>
 
     private string sqlRowsToSelect = "scoreId, participantName, points, scoreBoardId";
 
-    private Score ReadRow(SQLiteDataReader reader)
-    {
-        return new Score()
-        {
-            ScoreId = reader.GetInt32(0),
-            ScoreBoardId = reader.GetInt32(1),
-            ParticipantName = reader.GetString(2),
-            Points = reader.GetInt32(3)
-        };
-    }
-
     public IEnumerable<Score> GetFromScoreBoardId(int id)
     {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
-        SQLiteCommand cmd = conn.CreateCommand();
+        using SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
         SELECT {sqlRowsToSelect}
         FROM {TABLE} WHERE scoreBoardId = {id}
@@ -56,8 +45,9 @@ public class ScoreRepository : IRepository<Score>
     public void Add(Score model)
     {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
-        SQLiteCommand cmd = conn.CreateCommand();
+        using SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
+        PRAGMA foreign_keys = ON;
         INSERT INTO {TABLE} (participantName, points, scoreBoardId)
         VALUES (@participantName, @points, @scoreBoardId)";
 
@@ -71,7 +61,7 @@ public class ScoreRepository : IRepository<Score>
     public void Delete(int id)
     {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
-        SQLiteCommand cmd = conn.CreateCommand();
+        using SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
         DELETE FROM {TABLE}
         WHERE scoreId = @id";
@@ -81,10 +71,11 @@ public class ScoreRepository : IRepository<Score>
         cmd.ExecuteNonQuery();
     }
 
+
     public IEnumerable<Score> GetAll()
     {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
-        SQLiteCommand cmd = conn.CreateCommand();
+        using SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
         SELECT {sqlRowsToSelect}
         FROM {TABLE}";
@@ -97,9 +88,9 @@ public class ScoreRepository : IRepository<Score>
             scores.Add(new Score
             {
                 ScoreId = reader.GetInt32(0),
-                ScoreBoardId = reader.GetInt32(1),
-                ParticipantName = reader.GetString(2),
-                Points = reader.GetInt32(3)
+				ParticipantName= reader.GetString(1),
+				Points  = reader.GetInt32(2),
+                ScoreBoardId = reader.GetInt32(3)
             });
         }
 
@@ -109,7 +100,7 @@ public class ScoreRepository : IRepository<Score>
     public Score? GetById(int id)
     {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
-        SQLiteCommand cmd = conn.CreateCommand();
+        using SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
         SELECT {sqlRowsToSelect}
         FROM {TABLE}
@@ -124,9 +115,9 @@ public class ScoreRepository : IRepository<Score>
             return new Score
             {
                 ScoreId = reader.GetInt32(0),
-                ScoreBoardId = reader.GetInt32(1),
-                ParticipantName = reader.GetString(2),
-                Points = reader.GetInt32(3)
+				ParticipantName = reader.GetString(1),
+                Points = reader.GetInt32(2),
+                ScoreBoardId = reader.GetInt32(3)
             };
         }
 
@@ -136,7 +127,7 @@ public class ScoreRepository : IRepository<Score>
     public void Update(Score model)
     {
         using SQLiteConnection conn = _connectionHelper.GetConnection();
-        SQLiteCommand cmd = conn.CreateCommand();
+        using SQLiteCommand cmd = conn.CreateCommand();
         cmd.CommandText = $@"
         UPDATE {TABLE}
         SET participantName = @participantName, points = @points
