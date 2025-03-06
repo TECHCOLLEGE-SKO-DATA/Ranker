@@ -7,7 +7,7 @@ using System.Security.AccessControl;
 
 namespace Ranker.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class ScoreController : ControllerBase
 {
