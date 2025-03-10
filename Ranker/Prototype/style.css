@@ -129,6 +129,14 @@ h2 {
     background: #5ab8eb;
 }
 
+.fl-table tr{
+    cursor: pointer;
+}
+
+tr.selected{
+    background-color: rgba(1, 230, 255, 0.499) !important;
+}
+
 .fl-table tr:nth-child(even) {
     background: #F8F8F8;
 }
@@ -190,6 +198,7 @@ h2 {
 
     .fl-table tbody tr {
         display: table-cell;
+        cursor: pointer;
     }
 
     .fl-table tbody tr:nth-child(odd) {

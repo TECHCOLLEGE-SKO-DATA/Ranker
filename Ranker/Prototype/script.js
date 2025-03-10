@@ -1,5 +1,8 @@
+let selectedScoreBoardElement
+
 const scoreBoardTableBody = document.getElementById("scoreBoardTableBody")
 const scoreBoardTable = document.getElementById("scoreBoardTable")
+
 document.addEventListener("DOMContentLoaded", async () => {
     const response = await fetch('https://localhost:7285/ScoreBoard', {
         method: "GET",
@@ -12,10 +15,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await response.json()
 
     const dataArray = Array.isArray(data) ? data : [data];
-    
+
     dataArray.forEach((element) => {
 
         const tr = document.createElement("tr")
+        tr.addEventListener("click", () => selectScoreBoard(tr)) 
         tr.innerHTML = `
             <td>${element.scoreBoardId}</td>
             <td>${element.name}</td>
@@ -26,5 +30,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         scoreBoardTable.appendChild(tr)
 
     })
-    // console.log(typeof await response.json())
 })
+
+function selectScoreBoard(element){
+    if (selectedScoreBoardElement == element){
+
+        selectedScoreBoardElement = null
+        element.classList.remove("selected")
+    }
+    else{
+        if (selectedScoreBoardElement != null){
+            selectedScoreBoardElement.classList.remove("selected")
+        } 
+        element.classList.add("selected")
+        selectedScoreBoardElement = element
+    }
+}
