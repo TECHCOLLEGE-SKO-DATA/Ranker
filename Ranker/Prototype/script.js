@@ -12,12 +12,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     });
 
-
-
-
     const scoreBoarddata = await scoreBoardResponse.json()
 
-    /*const dataArray = Array.isArray(scoreBoarddata) ? scoreBoarddata : [scoreBoarddata];*/
     const scoreBoardDataArray = [].concat(scoreBoarddata);
 
     scoreBoardDataArray.forEach((element) => {
@@ -49,7 +45,7 @@ async function loadScoresFromScoreBoardElement(scoreBoardElement){
 
     const data = await response.json()
 
-    const dataArray = Array.isArray(data) ? data : [data];
+    const dataArray = [].concat(data);
     scoreTableBody.innerHTML = ""
     dataArray.forEach((element) => {
 
