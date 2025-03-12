@@ -4,7 +4,7 @@ const scoreBoardTableBody = document.getElementById("scoreBoardTableBody")
 const scoreBoardTable = document.getElementById("scoreBoardTable")
 const scoreTableBody = document.getElementById("scoreTableBody")
 document.addEventListener("DOMContentLoaded", async () => {
-    const response = await fetch('https://localhost:7285/ScoreBoard', {
+    const scoreBoardResponse = await fetch('https://localhost:7285/ScoreBoard', {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -12,15 +12,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     });
 
-    const data = await response.json()
 
-    const dataArray = Array.isArray(data) ? data : [data];
 
-    dataArray.forEach((element) => {
+
+    const scoreBoarddata = await scoreBoardResponse.json()
+
+    /*const dataArray = Array.isArray(scoreBoarddata) ? scoreBoarddata : [scoreBoarddata];*/
+    const scoreBoardDataArray = [].concat(scoreBoarddata);
+
+    scoreBoardDataArray.forEach((element) => {
 
         const tr = document.createElement("tr")
-        tr.addEventListener("click", () => selectScoreBoard(tr)) 
+        tr.addEventListener("click", () => selectScoreBoard(tr))
         tr.innerHTML = `
+            <td class="scoreBoardId">${element.scoreBoardId}</td>
             <td class="scoreBoardId">${element.scoreBoardId}</td>
             <td>${element.name}</td>
             <td>${element.description}</td>
@@ -30,6 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         scoreBoardTable.appendChild(tr)
 
     })
+
 })
 
 async function loadScoresFromScoreBoardElement(scoreBoardElement){
@@ -63,9 +69,10 @@ function selectScoreBoard(element){
     if (selectedScoreBoardElement == element){
         selectedScoreBoardElement = null
         element.classList.remove("selected")
+        console.log("MABYE")
     }
-    else{
-        if (selectedScoreBoardElement != null){
+    else {
+        if (selectedScoreBoardElement != null) {
             selectedScoreBoardElement.classList.remove("selected")
         } 
 
@@ -79,25 +86,20 @@ function ScoreboardAdd()
 {
 }
 
-function ScoreboardUpdate()
-{
+function ScoreboardUpdate() {
 }
 
-function ScoreboardDelete()
-{
+function ScoreboardDelete() {
 }
 
-function ScoreboardEnter()
-{
+function ScoreboardEnter() {
 }
 
 
-function ScoreAdd()
-{
+function ScoreAdd() {
 }
 
-function ScoreUpdate()
-{
+function ScoreUpdate() {
 }
 
 function ScoreDelete()
