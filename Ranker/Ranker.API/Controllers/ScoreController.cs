@@ -88,7 +88,7 @@ public class ScoreController : ControllerBase
 		}
 	}
 
-	[HttpGet("getFromScoreBoardId{scoreBoardId}")]
+	[HttpGet("getFromScoreBoardId/{scoreBoardId}")]
 	public IEnumerable<Score> GetFromScoreBoardId(int scoreBoardId)
 	{
 
