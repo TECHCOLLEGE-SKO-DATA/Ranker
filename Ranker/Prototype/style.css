@@ -141,6 +141,12 @@ tr.selected{
     background: #F8F8F8;
 }
 
+.scoreBoardInput{
+    width: 28%;
+
+    /* visibility: hidden; */
+}
+
 /* Responsive */
 
 @media (max-width: 767px) {

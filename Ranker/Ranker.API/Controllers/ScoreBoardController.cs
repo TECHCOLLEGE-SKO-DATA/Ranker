@@ -54,8 +54,8 @@ public class ScoreBoardController : Controller
 	}
 
 
-	[HttpPost("{board}")]
-    public ActionResult CreateScoreBoard(ScoreBoard board)
+	[HttpPost]
+    public ActionResult CreateScoreBoard([FromBody] ScoreBoard board)
     {
         APIConnectionHelper _connHelper = new();
         ScoreBoardRepository repository = new(_connHelper);
@@ -73,8 +73,8 @@ public class ScoreBoardController : Controller
 
     }
 
-    [HttpPut("{board}")]
-    public ActionResult UpdateScoreBoard(ScoreBoard board)
+    [HttpPut]
+    public ActionResult UpdateScoreBoard([FromBody] ScoreBoard board)
     {
 		APIConnectionHelper _connHelper = new();
 		ScoreBoardRepository repository = new(_connHelper);
