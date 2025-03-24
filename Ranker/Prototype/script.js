@@ -1,8 +1,10 @@
 let selectedScoreBoardElement
+let selectedScoreElement
 
 const scoreBoardTableBody = document.getElementById("scoreBoardTableBody")
 const scoreBoardTable = document.getElementById("scoreBoardTable")
 const scoreTableBody = document.getElementById("scoreTableBody")
+const localhost = "https://localhost:7285/"
 const scoreBoardSettingsIdInput = document.getElementById("scoreBoardSettingsIdInput")
 const scoreBoardDescriptionInput = document.getElementById("scoreBoardDescriptionInput")
 const scoreBoardNameInput = document.getElementById("scoreBoardNameInput")
@@ -56,7 +58,7 @@ async function scoreBoardEnter() {
 }
 
 async function loadScoreBoards() {
-    const scoreBoardResponse = await fetch('https://localhost:7285/ScoreBoard', {
+    const scoreBoardResponse = await fetch(`${localhost}ScoreBoard`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -89,6 +91,8 @@ async function loadScoreBoards() {
 
 async function loadScoresFromScoreBoardElement(scoreBoardElement) {
     let scoreBoardId = parseInt(scoreBoardElement.querySelector(".scoreBoardId").innerHTML)
+    const response = await fetch(`${localhost}Score/getFromScoreBoardId/${scoreBoardId}`, {
+        method : "GET",
     const response = await fetch(`https://localhost:7285/Score/getFromScoreBoardId/${scoreBoardId}`, {
         method: "GET",
         headers: {
@@ -126,7 +130,6 @@ async function selectScoreBoard(element) {
     if (selectedScoreBoardElement == element) {
         selectedScoreBoardElement = null
         element.classList.remove("selected")
-        console.log("MABYE")
     }
     else {
         if (selectedScoreBoardElement != null) {
@@ -139,6 +142,23 @@ async function selectScoreBoard(element) {
 
     await loadScoresFromScoreBoardElement(element)
 }
+
+async function selectScore(element) {
+    if (selectedScoreElement == element){
+        selectedScoreElement = null
+        element.classList.remove("selected")
+    }
+    else {
+        if (selectedScoreElement != null) {
+            selectedScoreElement.classList.remove("selected")
+        } 
+
+        element.classList.add("selected")
+        selectedScoreElement = element
+    }
+}
+
+
 
 function ScoreboardAdd() {
     scoreBoardInputMode = inputModes.add
@@ -155,6 +175,8 @@ function ScoreboardUpdate() {
 
 async function ScoreboardDelete() {
     let uniqueKey = selectedScoreBoardElement.querySelector(".uniqueKey").innerHTML
+    const response = await fetch(`${localhost}ScoreBoard/${uniqueKey}`, {
+        method : "DELETE"
     const response = await fetch(`https://localhost:7285/ScoreBoard/${uniqueKey}`, {
         method: "DELETE"
     })
@@ -174,6 +196,8 @@ function ScoreAdd() {
 function ScoreUpdate() {
 }
 
-function ScoreDelete() {
+async function ScoreDelete() {
+    let scoreId = selectedScoreElement.querySelector(".scoreId").innerHTML
+    await fetch(`${localhost}Score/${scoreId}`, { method : "DELETE" })
 
 }
