@@ -37,8 +37,8 @@ public class ScoreController : ControllerBase
 		return score == null ? new Score() : score;
 	}
 
-	[HttpPost("{score}")]
-	public ActionResult Create(Score score)
+	[HttpPost]
+	public ActionResult Create([FromBody]Score score)
 	{
 		APIConnectionHelper _connHelper = new();
 		ScoreRepository repository = new(_connHelper);
@@ -71,8 +71,8 @@ public class ScoreController : ControllerBase
 		}
 	}
 
-	[HttpPut("{score}")]
-	public ActionResult Put(Score score)
+	[HttpPut]
+	public ActionResult Put([FromBody] Score score)
 	{
 		APIConnectionHelper _connHelper = new();
 		ScoreRepository repository = new(_connHelper);

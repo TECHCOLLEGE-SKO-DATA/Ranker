@@ -1,5 +1,5 @@
-let selectedScoreBoardElement
-let selectedScoreElement
+let selectedScoreBoardElement = null
+let selectedScoreElement = null
 
 const scoreBoardTableBody = document.getElementById("scoreBoardTableBody")
 const scoreBoardTable = document.getElementById("scoreBoardTable")
@@ -8,7 +8,8 @@ const localhost = "https://localhost:7285/"
 const scoreBoardSettingsIdInput = document.getElementById("scoreBoardSettingsIdInput")
 const scoreBoardDescriptionInput = document.getElementById("scoreBoardDescriptionInput")
 const scoreBoardNameInput = document.getElementById("scoreBoardNameInput")
-
+const scorePointsInput = document.getElementById("scorePointsInput")
+const scoreParticipantNameInput = document.getElementById("scoreParticipantNameInput")
 
 
 
@@ -23,7 +24,7 @@ function makeScoreBoardsVisible() {
 }
 
 async function scoreBoardEnter() {
-    let scoreBoard = {
+    const scoreBoard = {
         "name": scoreBoardNameInput.value,
         "description": scoreBoardDescriptionInput.value,
         "settingId": parseInt(scoreBoardSettingsIdInput.value),
@@ -102,51 +103,37 @@ async function loadScoresFromScoreBoardElement(scoreBoardElement) {
 }
 
 async function selectScore(element) {
-    element.classList.remove("selected")
+    if (selectedScoreElement){
+        selectedScoreElement.classList.remove("selected")
+    }
 
     if (element == selectedScoreElement){
         selectedScoreElement = null
         return
     }
-    
+
     selectedScoreElement = element
 
     element.classList.add("selected")
 }
 
 async function selectScoreBoard(element) {
-    if (selectedScoreBoardElement == element) {
-        selectedScoreBoardElement = null
-        element.classList.remove("selected")
-    }
-    else {
-        if (selectedScoreBoardElement != null) {
-            selectedScoreBoardElement.classList.remove("selected")
-        }
 
-        element.classList.add("selected")
-        selectedScoreBoardElement = element
+    if (selectedScoreBoardElement){
+        selectedScoreBoardElement.classList.remove("selected")
+    } 
+
+    if (element == selectedScoreBoardElement){
+        selectedScoreBoardElement = null
+        return
     }
+
+    selectedScoreBoardElement = element
+
+    element.classList.add("selected")
 
     await loadScoresFromScoreBoardElement(element)
 }
-
-async function selectScore(element) {
-    if (selectedScoreElement == element) {
-        selectedScoreElement = null
-        element.classList.remove("selected")
-    }
-    else {
-        if (selectedScoreElement != null) {
-            selectedScoreElement.classList.remove("selected")
-        }
-
-        element.classList.add("selected")
-        selectedScoreElement = element
-    }
-}
-
-
 
 function ScoreboardAdd() {
     makeScoreBoardsVisible()
@@ -165,9 +152,26 @@ async function ScoreboardDelete() {
 
 }
 
-
+async function ScoreInsert(){
+    const score = {
+        "scoreBoardId" : parseInt(selectedScoreBoardElement.querySelector(".scoreBoardId").innerHTML),
+        "participantName" : scoreParticipantNameInput.value,
+        "points" : scorePointsInput.value
+    }
+    
+    const response = fetch(`${localhost}Score`, {
+        method : "POST",
+        headers: {
+            'Accept': 'application/json',
+            "Content-Type": "application/json"
+        },
+        body : JSON.stringify(score)
+    }) 
+}
 
 function ScoreAdd() {
+    scorePointsInput.style.visibility = "visible"
+    scoreParticipantNameInput.style.visibility = "visible"
 }
 
 async function ScoreDelete() {
