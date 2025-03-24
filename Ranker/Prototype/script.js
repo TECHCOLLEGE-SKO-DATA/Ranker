@@ -93,11 +93,6 @@ async function loadScoresFromScoreBoardElement(scoreBoardElement) {
     let scoreBoardId = parseInt(scoreBoardElement.querySelector(".scoreBoardId").innerHTML)
     const response = await fetch(`${localhost}Score/getFromScoreBoardId/${scoreBoardId}`, {
         method : "GET",
-    const response = await fetch(`https://localhost:7285/Score/getFromScoreBoardId/${scoreBoardId}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
     })
 
     if (!response.ok) {
@@ -177,8 +172,6 @@ async function ScoreboardDelete() {
     let uniqueKey = selectedScoreBoardElement.querySelector(".uniqueKey").innerHTML
     const response = await fetch(`${localhost}ScoreBoard/${uniqueKey}`, {
         method : "DELETE"
-    const response = await fetch(`https://localhost:7285/ScoreBoard/${uniqueKey}`, {
-        method: "DELETE"
     })
 
     if (response.ok) {
