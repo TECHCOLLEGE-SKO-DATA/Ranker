@@ -148,7 +148,7 @@ tr.selected{
 .scoreBoardInput{
     width: 28%;
 
-    /* visibility: hidden; */
+    visibility: hidden;
 }
 
 /* Responsive */
