@@ -64,18 +64,6 @@ a:hover {
 	box-shadow: 0 3px 0 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 /*TABLES*/
 
 * {
@@ -240,11 +228,6 @@ tr.selected{
         text-align: center;
     }
 }
-
-
-
-
-
 
 .btn {
     background-color: DodgerBlue;
