@@ -21,8 +21,8 @@ public class ScoreController : ControllerBase
 	[HttpGet]
 	public IEnumerable<Score> Get()
 	{
-		APIConnectionHelper _connHelper = new();
-		ScoreRepository repository = new(_connHelper);
+		APIConnectionHelper connHelper = new();
+		ScoreRepository repository = new(connHelper);
 
 		return repository.GetAll();
 	}
@@ -30,8 +30,8 @@ public class ScoreController : ControllerBase
 	[HttpGet("getById/{id}")]
 	public Score GetById(int id)
 	{
-		APIConnectionHelper _connHelper = new();
-		ScoreRepository repository = new(_connHelper);
+		APIConnectionHelper connHelper = new();
+		ScoreRepository repository = new(connHelper);
 		Score? score = repository.GetById(id);
 
 		return score == null ? new Score() : score;
@@ -40,8 +40,8 @@ public class ScoreController : ControllerBase
 	[HttpPost]
 	public ActionResult Create([FromBody]Score score)
 	{
-		APIConnectionHelper _connHelper = new();
-		ScoreRepository repository = new(_connHelper);
+		APIConnectionHelper connHelper = new();
+		ScoreRepository repository = new(connHelper);
 
 		try
 		{
@@ -57,8 +57,8 @@ public class ScoreController : ControllerBase
 	[HttpDelete("{id}")]
 	public ActionResult Delete(int id)
 	{
-		APIConnectionHelper _connHelper = new();
-		ScoreRepository repository = new(_connHelper);
+		APIConnectionHelper connHelper = new();
+		ScoreRepository repository = new(connHelper);
 
 		try
 		{
@@ -74,8 +74,8 @@ public class ScoreController : ControllerBase
 	[HttpPut]
 	public ActionResult Put([FromBody] Score score)
 	{
-		APIConnectionHelper _connHelper = new();
-		ScoreRepository repository = new(_connHelper);
+		APIConnectionHelper connHelper = new();
+		ScoreRepository repository = new(connHelper);
 
 		try
 		{
@@ -92,8 +92,8 @@ public class ScoreController : ControllerBase
 	public IEnumerable<Score> GetFromScoreBoardId(int scoreBoardId)
 	{
 
-		APIConnectionHelper _connHelper = new();
-		ScoreRepository repository = new(_connHelper);
+		APIConnectionHelper connHelper = new();
+		ScoreRepository repository = new(connHelper);
 
 		return repository.GetFromScoreBoardId(scoreBoardId);
 	}

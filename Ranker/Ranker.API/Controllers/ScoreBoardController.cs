@@ -20,8 +20,8 @@ public class ScoreBoardController : Controller
     [HttpGet]
     public IEnumerable<ScoreBoard> Get()
     {
-        APIConnectionHelper _connHelper = new();
-        ScoreBoardRepository repository = new(_connHelper);
+        APIConnectionHelper connHelper = new();
+        ScoreBoardRepository repository = new(connHelper);
 
         return repository.GetAll();
     }
@@ -29,8 +29,8 @@ public class ScoreBoardController : Controller
     [HttpGet("single{uniqueKey}")]
     public ScoreBoard Get(string uniqueKey)
     {
-        APIConnectionHelper _connHelper = new();
-        ScoreBoardRepository repository = new(_connHelper);
+        APIConnectionHelper connHelper = new();
+        ScoreBoardRepository repository = new(connHelper);
         ScoreBoard? scoreBoard = repository.GetByUniqueKey(uniqueKey);
 
 		return scoreBoard == null ? new ScoreBoard() : scoreBoard;
@@ -39,8 +39,8 @@ public class ScoreBoardController : Controller
     [HttpDelete("{uniqueKey}")]
     public ActionResult DeleteScoreBoard(string uniqueKey)
 	{
-		APIConnectionHelper _connHelper = new();
-		ScoreBoardRepository repository = new(_connHelper);
+		APIConnectionHelper connHelper = new();
+		ScoreBoardRepository repository = new(connHelper);
 
 		try
 		{
@@ -57,8 +57,8 @@ public class ScoreBoardController : Controller
 	[HttpPost]
     public ActionResult CreateScoreBoard([FromBody] ScoreBoard board)
     {
-        APIConnectionHelper _connHelper = new();
-        ScoreBoardRepository repository = new(_connHelper);
+        APIConnectionHelper connHelper = new();
+        ScoreBoardRepository repository = new(connHelper);
         board.UniqueKey = Utility.CreateScoreboardUniqueKey();
 
 		try
@@ -76,8 +76,8 @@ public class ScoreBoardController : Controller
     [HttpPut]
     public ActionResult UpdateScoreBoard([FromBody] ScoreBoard board)
     {
-		APIConnectionHelper _connHelper = new();
-		ScoreBoardRepository repository = new(_connHelper);
+		APIConnectionHelper connHelper = new();
+		ScoreBoardRepository repository = new(connHelper);
 
         try
         {
