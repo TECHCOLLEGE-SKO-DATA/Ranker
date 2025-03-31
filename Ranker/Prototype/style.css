@@ -19,6 +19,14 @@ body {
   animation: gradient-animation 10s ease infinite;
 }
 
+#scoreBoardEnterButton{
+    display: none;
+}
+
+#scoreInsertButton{
+    display: none;
+}
+
 @keyframes gradient-animation {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -115,11 +123,11 @@ h2 {
 .fl-table th {
     text-align: center;
     padding: 8px;
+    font-size: 16px;
 }
 
 .fl-table td {
     border: 1px solid #00000027;
-    font-size: 12px;
 }
 
 .fl-table thead th {
@@ -147,8 +155,7 @@ tr.selected{
 
 .scoreBoardInput{
     width: 28%;
-
-    visibility: hidden;
+    display: none;
 }
 
 /* Responsive */

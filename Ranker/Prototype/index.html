@@ -45,10 +45,10 @@
         <button onclick="ScoreboardAdd()" class="btn"><i class="fa fa-plus-circle"></i></button>
         <button onclick="ScoreboardDelete()" class="btn"><i class="fa fa-trash"></i></button>
         <br>
-        <input id="scoreBoardNameInput" class="scoreBoardInput"/>
-        <input id="scoreBoardDescriptionInput" class="scoreBoardInput"/>
-        <input type="number" id="scoreBoardSettingsIdInput" class="scoreBoardInput"/>
-        <button onclick="scoreBoardEnter()" class="btn"><i class="fa fa-level-down"></i></button>
+        <input placeholder="Name" id="scoreBoardNameInput" class="scoreBoardInput"/>
+        <input placeholder="Description" id="scoreBoardDescriptionInput" class="scoreBoardInput"/>
+        <input placeholder="Settings ID" type="number" id="scoreBoardSettingsIdInput" class="scoreBoardInput"/>
+        <button id="scoreBoardEnterButton" onclick="scoreBoardEnter()" class="btn"><i class="fa fa-level-down"></i></button>
         <table class="fl-table" id="scoreBoardTable">
             <thead>
                 <tr>
@@ -73,9 +73,10 @@
     <div class="table-wrapper">
         <button onclick="ScoreAdd()" class="btn"><i class="fa fa-plus-circle"></i></button>
         <button onclick="ScoreDelete()" class="btn"><i class="fa fa-trash"></i></button>
-        <input id="scoreParticipantNameInput" class="scoreBoardInput"/>
-        <input id="scorePointsInput" type="number" class="scoreBoardInput"/>
-        <button onclick="ScoreInsert()" class="btn"><i class="fa fa-level-down"></i></button>
+        <br>
+        <input placeholder="Participant Name" id="scoreParticipantNameInput" class="scoreBoardInput"/>
+        <input placeholder="Score" id="scorePointsInput" type="number" class="scoreBoardInput"/>
+        <button id="scoreInsertButton" onclick="ScoreInsert()" class="btn"><i class="fa fa-level-down"></i></button>
         <table class="fl-table">
             <thead>
                 <tr>

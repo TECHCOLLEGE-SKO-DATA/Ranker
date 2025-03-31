@@ -10,17 +10,18 @@ const scoreBoardDescriptionInput = document.getElementById("scoreBoardDescriptio
 const scoreBoardNameInput = document.getElementById("scoreBoardNameInput")
 const scorePointsInput = document.getElementById("scorePointsInput")
 const scoreParticipantNameInput = document.getElementById("scoreParticipantNameInput")
-
-
+const scoreBoardEnterButton = document.getElementById("scoreBoardEnterButton")
+const scoreInsertButton = document.getElementById("scoreInsertButton")
 
 document.addEventListener("DOMContentLoaded", async () => {
     await loadScoreBoards()
 })
 
 function makeScoreBoardsVisible() {
-    scoreBoardSettingsIdInput.style.visibility = "visible"
-    scoreBoardDescriptionInput.style.visibility = "visible"
-    scoreBoardNameInput.style.visibility = "visible"
+    scoreBoardSettingsIdInput.style.display = "inline"
+    scoreBoardDescriptionInput.style.display = "inline"
+    scoreBoardNameInput.style.display = "inline"
+    scoreBoardEnterButton.style.display = "inline"
 }
 
 async function scoreBoardEnter() {
@@ -170,8 +171,9 @@ async function ScoreInsert(){
 }
 
 function ScoreAdd() {
-    scorePointsInput.style.visibility = "visible"
-    scoreParticipantNameInput.style.visibility = "visible"
+    scorePointsInput.style.display = "inline"
+    scoreParticipantNameInput.style.display = "inline"
+    scoreInsertButton.style.display = "inline"
 }
 
 async function ScoreDelete() {
