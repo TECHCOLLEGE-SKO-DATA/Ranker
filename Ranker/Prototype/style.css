@@ -95,6 +95,10 @@ h2 {
     background-color: white;
 }
 
+.participantName{
+    width: 50%;
+}
+
 .fl-table {
     font-size: 12px;
     font-weight: normal;
@@ -105,6 +109,14 @@ h2 {
     white-space: nowrap;
     background-color: white;
     
+}
+
+.scoreId{
+    width: 25%;
+}
+
+.scorePoints{
+    width: 25%;
 }
 
 .fl-table td,

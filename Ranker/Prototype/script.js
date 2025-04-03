@@ -95,7 +95,7 @@ async function loadScoresFromScoreBoardElement(scoreBoardElement) {
         tr.addEventListener("click", async () => selectScore(tr))
         tr.innerHTML = `
             <td class="scoreId">${element.scoreId}</td>
-            <td>${element.participantName}</td>
+            <td class="participantName"> ${element.participantName}</td>
             <td>${element.points}</td>
         `
         scoreTableBody.appendChild(tr)
@@ -126,6 +126,7 @@ async function selectScoreBoard(element) {
 
     if (element == selectedScoreBoardElement){
         selectedScoreBoardElement = null
+        scoreTableBody.innerHTML = ""
         return
     }
 
